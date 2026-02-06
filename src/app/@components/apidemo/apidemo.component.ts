@@ -20,12 +20,14 @@ export class ApidemoComponent {
   dayOptions!: string[]; // 下拉三天
   selectedDay!: string; // 目前選擇
   filteredData!: any[]; // 顯示資料
+  //今天data
   currentTemp!: string;
   currentAppTemp!: number;
   currentWeather!: string;
   currentWeatherDesc!: string;
   currentTime!: string;
   currentWeathercode!: string;
+  currentProbabilityOfPrecipitation!:string;
 
   // 抓後三天
   getNext3Days() {
@@ -69,6 +71,7 @@ export class ApidemoComponent {
         weather: three?.weather ?? '',
         weatherDes: three?.weatherDes ?? '',
         weatherCode: three?.weatherCode ?? '01',
+        probabilityOfPrecipitation: three?.probabilityOfPrecipitation,
       };
     });
   }
@@ -112,6 +115,7 @@ export class ApidemoComponent {
     this.currentWeather = three.weather;
     this.currentWeatherDesc = three.weatherDes;
     this.currentWeathercode = three.weatherCode;
+    this.currentProbabilityOfPrecipitation = three.probabilityOfPrecipitation;
   }
 
   areaChange(change: string) {
@@ -157,12 +161,16 @@ export class ApidemoComponent {
         weatherDes:
           data.WeatherElement[9].Time[i].ElementValue[0].WeatherDescription,
         weatherCode: data.WeatherElement[8].Time[i].ElementValue[0].WeatherCode,
+        probabilityOfPrecipitation:
+          data.WeatherElement[7].Time[i].ElementValue[0]
+            .ProbabilityOfPrecipitation,
       };
       threetest.push(item);
     }
-    console.table(threetest);
+    // console.table(threetest);
     this.oneHourData = test;
     this.threeHourData = threetest;
+    // console.log(this.threeHourData)
 
     // console.table(test);
   }
