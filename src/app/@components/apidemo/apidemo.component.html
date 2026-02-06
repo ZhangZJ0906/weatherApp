@@ -1,0 +1,140 @@
+<!-- 首都 -->
+<p class="text-center">{{ city }}</p>
+
+<!-- 選地區 -->
+<div class="text-center">
+  <label for="cityArea">選地區</label>
+  <select name="area" id="cityArea" [(ngModel)]="choseArea" (ngModelChange)="areaChange(choseArea)" class=" mb-3">
+    @for (item of area; track $index) {
+    <option [value]="item">{{ item }}</option>
+    }
+  </select>
+
+</div>
+
+
+<!-- 目前選擇的地區 -->
+<!-- <p>{{ choseArea }}</p> -->
+
+<!-- 目前天氣 -->
+<div class="card text-center p-3 shadow-sm">
+
+  <h6 class="mb-2 fw-bold">目前天氣</h6>
+
+  <!-- icon -->
+  <div class="mx-auto mb-2 " style="height: 200px;">
+    @switch (currentWeathercode) {
+    @case ("01") {
+    <img src="image/clear-day.svg" class="img-fluid" style="height:200px" />
+    }
+    @case ("04") {
+    <img src="image/partly-cloudy-day.svg" class="img-fluid" style="height:200px" />
+    }
+    @case ("07") {
+    <img src="image/cloudy.svg" class="img-fluid" style="height:200px" />
+    }
+    @case ("08") {
+    <img src="image/partly-cloudy-day-drizzle.svg" class="img-fluid" style="height:200px" />
+    }
+    }
+  </div>
+
+  <!-- info -->
+  <div class="small text-muted mb-1">
+    {{ currentTime }}
+  </div>
+
+  <div class="fs-4 fw-bold">
+    溫度:{{ currentTemp }}°C
+  </div>
+
+  <div class="mb-1">
+    體感：
+    @if(currentAppTemp >= 23){
+    <span class="text-danger fw-semibold">{{ currentAppTemp }}</span>
+    }@else{
+    <span class="text-primary fw-semibold">{{ currentAppTemp }}</span>
+    }°C
+  </div>
+
+  <div class="fw-semibold">
+    {{ currentWeather }}
+  </div>
+
+  <div class="small text-secondary">
+    {{ currentWeatherDesc }}
+  </div>
+
+</div>
+
+<!-- 選日期 -->
+<div class="text-center">
+  <label for="choseDay">選日期</label>
+
+  <select name="choseDay" id="choseDay" [(ngModel)]="selectedDay" (change)="filterByDay(selectedDay)" class="my-3">
+    @for (item of dayOptions; track $index) {
+    <option [value]="item">
+      {{ item }}
+    </option>
+    }
+  </select>
+</div>
+<!-- 未來逐小時 -->
+
+<div class="container">
+  <div class="row g-3 justify-content-center">
+
+    @for (data of filteredData; track data.time) {
+
+    <div class="col-6 col-md-4 col-lg-2">
+
+      <div class="card h-100 text-center shadow-sm">
+
+        @switch (data.weatherCode) {
+        @case ("01") {
+        <img src="image/clear-day.svg" class="card-img-top p-3" style="height:200px">
+        }
+        @case ("04") {
+        <img src="image/partly-cloudy-day.svg" class="card-img-top p-3" style="height:200px">
+        }
+        @case ("07") {
+        <img src="image/cloudy.svg" class="card-img-top p-3" style="height:200px">
+        }
+        @case ("08") {
+        <img src="image/partly-cloudy-day-drizzle.svg" class="card-img-top p-3" style="height:200px">
+        }
+        }
+
+        <div class="card-body small">
+
+          <div class="fw-semibold mb-1">
+            {{ data.time }}
+          </div>
+
+          <div class="fs-6 fw-bold">
+            溫度:{{ data.temperature }}°C
+          </div>
+
+          <div>
+            體感：
+            @if(data.apparentTemperature >= 23){
+            <span class="text-danger">{{ data.apparentTemperature }}</span>
+            }@else{
+            <span class="text-primary">{{ data.apparentTemperature }}</span>
+            }°C
+          </div>
+
+          <div class="text-muted mt-1">
+            {{ data.weatherDes }}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    }
+
+  </div>
+</div>
