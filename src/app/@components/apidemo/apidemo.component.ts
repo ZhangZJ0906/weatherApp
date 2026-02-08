@@ -21,13 +21,13 @@ export class ApidemoComponent {
   selectedDay!: string; // 目前選擇
   filteredData!: any[]; // 顯示資料
   //今天data
-  currentTemp!: string;
+  currentTemp!: number;
   currentAppTemp!: number;
   currentWeather!: string;
   currentWeatherDesc!: string;
   currentTime!: string;
   currentWeathercode!: string;
-  currentProbabilityOfPrecipitation!:string;
+  currentProbabilityOfPrecipitation!:number;
 
   // 抓後三天
   getNext3Days() {
@@ -85,8 +85,8 @@ export class ApidemoComponent {
     // 1小時溫度（抓最近一筆 <= now）
     // =========================
     let hour = this.oneHourData
-      .slice() // 不污染原陣列
-      .reverse() // 從最新往前找
+      .slice()
+      .reverse()
       .find((item: any) => new Date(item.time).getTime() <= now);
 
     // ⭐ 如果現在比第一筆還早（像你 11:39 < 12:00）
@@ -94,7 +94,8 @@ export class ApidemoComponent {
       hour = this.oneHourData[0];
     }
 
-    this.currentTemp = hour.temperature;
+    this.currentTemp = parseInt(hour.temperature);
+    console.log(this.currentTemp)
     this.currentAppTemp = hour.apparentTemperature;
     this.currentTime = hour.time;
 
@@ -107,7 +108,7 @@ export class ApidemoComponent {
       return now >= start && now < end;
     });
 
-    // ⭐ 如果沒命中（例如資料全部未來）
+    //  如果沒命中（例如資料全部未來）
     if (!three) {
       three = this.threeHourData[0];
     }
@@ -115,7 +116,7 @@ export class ApidemoComponent {
     this.currentWeather = three.weather;
     this.currentWeatherDesc = three.weatherDes;
     this.currentWeathercode = three.weatherCode;
-    this.currentProbabilityOfPrecipitation = three.probabilityOfPrecipitation;
+    this.currentProbabilityOfPrecipitation = parseInt(three.probabilityOfPrecipitation);
   }
 
   areaChange(change: string) {
@@ -180,7 +181,7 @@ export class ApidemoComponent {
 
     this.http
       .getApi(
-        'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-065?Authorization=CWA-C947A3E5-F386-4189-B35D-7A5DAEB29BF7&limit=3&offset=3',
+        'https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-065?Authorization=CWA-C947A3E5-F386-4189-B35D-7A5DAEB29BF7',
       )
       .subscribe((res: any) => {
         let result = res.records.Locations[0];
